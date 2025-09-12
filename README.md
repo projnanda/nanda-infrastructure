@@ -15,11 +15,54 @@ The NANDA Adapter:
 * MongoDB Compass 
 * Root/sudo access (for SSL certificate management)
 * Port 80 available (for Let's Encrypt certificate challenge)
+* NANDA SDK
   
 ## Configuration
+Retrieve an [Anthropic Key](https://console.anthropic.com). Set your `ANTHROPIC_API_KEY` environment variable
+```
+export ANTHROPIC_API_KEY="YOUR KEY HERE"
+```
+
+
 
 ## Installation
 Clone the repository
+```
+git clone https://github.com/projnanda/nanda-infrastructure
+```
+
+Run the `requirements.txt` file
+```
+pip install -r requirements.txt
+```
+
+Run one of the files. Here we will run the example `langchain_pirate.py`
+```
+python3 langchain_pirate.py
+```
+
+In a new terminal tab, run the following command:
+```
+curl -X POST http://localhost:8000/a2a \              
+  -H "Content-Type: application/json" \
+  -d '{
+    "role": "user",
+    "content": {
+      "type": "text",
+      "text": "@agent123 Hello, how are you doing today?"
+    }
+  }'
+```
+
+If it started successfully, you should see the message below:
+```
+🚀 Starting Agent default bridge on port 8000
+Agent terminal port: 6010
+Message improvement feature is ENABLED
+Logging conversations to /Users/debbieyuen/Documents/Personal Projects/radiusfellow/adapter-edge-sdk/nanda_adapter/examples/conversation_logs
+🔧 Using custom improvement logic: pirate_improvement
+Starting A2A server on http://0.0.0.0:8000/a2a
+```
 
 ## License
 MIT License
