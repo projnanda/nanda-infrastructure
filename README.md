@@ -92,61 +92,6 @@ INFO:werkzeug:WARNING: This is a development server. Do not use it in a producti
 INFO:werkzeug:Press CTRL+C to quit
 ```
 
-## Example Curl Commands
-#### File Name: `langchain_majoradvice`
-```
-curl -sS -X POST 'http://127.0.0.1:6000/a2a' \
-  -H 'Content-Type: application/json' \
-  --data-binary '{"role":"user","parts":[{"type":"text","text":"@agent123 I need help selecting a college major"}]}'
-```
-
-#### File Name: `langchain_linearalgebra`
-```
-curl -sS -X POST 'http://127.0.0.1:6000/a2a' \
-  -H 'Content-Type: application/json' \
-  --data-binary '{"role":"user","parts":[{"type":"text","text":"Please explain what linear algebra is and show Gaussian elimination on [[2,1],[5,3]]."}]}'
-```
-
-#### File Name: `langchain_capability_certifier.py`
-
-Terminal A: Run your target agent (the one you’re certifying)
-```
-export ANTHROPIC_API_KEY=sk-ant-...
-export PORT=7000
-python langchain_linearalgebra.py
-# serves A2A at http://127.0.0.1:7000/a2a
-```
-
-Terminal B: Run the Capability Certifier
-```
-export CERT_SECRET=dev-secret-change-me
-export PORT=6000
-python capability_certifier.py
-# serves A2A at http://127.0.0.1:6000/a2a
-```
-
-Curl Commands: Start a certification job (run once)
-```
-curl -sS -X POST 'http://127.0.0.1:6000/a2a' \
-  -H 'Content-Type: application/json' \
-  --data-binary '{"role":"user","parts":[{"type":"text","text":"{\"action\":\"status\",\"cert_job_id\":\"job_...\"}"}]}'
-```
-
-Curl Commands: Check status (poll this until status":"done")
-```
-curl -sS -X POST 'http://127.0.0.1:6000/a2a' \
-  -H 'Content-Type: application/json' \
-  --data-binary '{"role":"user","parts":[{"type":"text","text":"{\"action\":\"status\",\"cert_job_id\":\"job_...\"}"}]}'
-```
-
-Curl Commands: Fetch the signed certificate (when done)
-```
-curl -sS -X POST 'http://127.0.0.1:6000/a2a' \
-  -H 'Content-Type: application/json' \
-  --data-binary '{"role":"user","parts":[{"type":"text","text":"{\"action\":\"certificate\",\"agent_id\":\"agent://math.eu/002\"}"}]}'
-```
-
-
 ## Resources
 * Agent Development Kit (ADK) Samples
 * [NANDA-SDK](https://github.com/projnanda/nanda-sdk?tab=readme-ov-file)
