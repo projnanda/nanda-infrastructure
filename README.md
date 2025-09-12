@@ -16,12 +16,6 @@ The NANDA Adapter:
 * Root/sudo access (for SSL certificate management)
 * Port 80 available (for Let's Encrypt certificate challenge)
 * NANDA SDK
-  
-## Configuration
-Retrieve an [Anthropic Key](https://console.anthropic.com). Set your `ANTHROPIC_API_KEY` environment variable
-```
-export ANTHROPIC_API_KEY="YOUR KEY HERE"
-```
 
 ## Installation
 Clone the repository
@@ -32,6 +26,19 @@ git clone https://github.com/projnanda/nanda-infrastructure
 Install the NANDA SDK
 ```
 pip install nanda-sdk
+```
+
+If you are on a Mac, it may be useful to create a virtual environment
+```
+python3 -m venv .venv
+source .venv/bin/activate           # Windows: .venv\Scripts\Activate.ps1
+python -m pip install -U pip
+python -m pip install nanda-adapter langchain-anthropic anthropic langchain-core
+```
+
+Retrieve an [Anthropic Key](https://console.anthropic.com). Set your `ANTHROPIC_API_KEY` environment variable
+```
+export ANTHROPIC_API_KEY="YOUR KEY HERE"
 ```
 
 Run the `requirements.txt` file
@@ -59,12 +66,30 @@ curl -X POST http://localhost:8000/a2a \
 
 If it started successfully, you should see the message below:
 ```
+🤖 NANDA initialized with custom improvement logic: pirate_improvement
+🔧 Custom improvement logic 'pirate_improvement' registered
+Message improver set to: nanda_custom
+✅ AgentBridge created with custom improve_message_direct: pirate_improvement
+Starting Pirate Agent with LangChain...
+All messages will be transformed to pirate English!
+🚀 NANDA starting agent_bridge server with custom logic...
+🔧 UI_CLIENT_URL:
+WARNING: PUBLIC_URL environment variable not set. Agent will not be registered.
+
 🚀 Starting Agent default bridge on port 8000
 Agent terminal port: 6010
 Message improvement feature is ENABLED
 Logging conversations to /Users/debbieyuen/Documents/Personal Projects/radiusfellow/adapter-edge-sdk/nanda_adapter/examples/conversation_logs
 🔧 Using custom improvement logic: pirate_improvement
 Starting A2A server on http://0.0.0.0:8000/a2a
+Google A2A compatibility: Enabled
+ * Serving Flask app 'python_a2a.server.http'
+ * Debug mode: off
+INFO:werkzeug:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8000
+ * Running on http://10.23.111.87:8000
+INFO:werkzeug:Press CTRL+C to quit
 ```
 
 ## Resources
