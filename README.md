@@ -29,6 +29,11 @@ Clone the repository
 git clone https://github.com/projnanda/nanda-infrastructure
 ```
 
+Install the NANDA SDK
+```
+pip install nanda-sdk
+```
+
 Run the `requirements.txt` file
 ```
 pip install -r requirements.txt
