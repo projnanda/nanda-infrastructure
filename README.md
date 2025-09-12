@@ -92,6 +92,24 @@ INFO:werkzeug:WARNING: This is a development server. Do not use it in a producti
 INFO:werkzeug:Press CTRL+C to quit
 ```
 
+## Exampmle Curl Commands
+File Name: `langchain_majoradvice`
+```
+curl -sS -X POST 'http://127.0.0.1:6000/a2a' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{"role":"user","parts":[{"type":"text","text":"@agent123 I need help selecting a college major"}]}'
+```
+
+File Name: `langchain_linearalgebra`
+```
+curl -sS -X POST 'http://127.0.0.1:6000/a2a' \
+  -H 'Content-Type: application/json' \
+  --data-binary '{"role":"user","parts":[{"type":"text","text":"Please explain what linear algebra is and show Gaussian elimination on [[2,1],[5,3]]."}]}'
+```
+
+
+
+
 ## Resources
 * Agent Development Kit (ADK) Samples
 * [NANDA-SDK](https://github.com/projnanda/nanda-sdk?tab=readme-ov-file)
