@@ -93,7 +93,7 @@ INFO:werkzeug:Press CTRL+C to quit
 ```
 
 ## Resources
-* Agent Development Kit (ADK) Samples
+* [Agent Development Kit (ADK) Samples](https://github.com/google/adk-samples)
 * [NANDA-SDK](https://github.com/projnanda/nanda-sdk?tab=readme-ov-file)
 * [DuckDNS](https://www.duckdns.org/domains)
 * [AWS EC2](https://us-east-2.signin.aws.amazon.com)
