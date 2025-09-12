@@ -5,8 +5,8 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
 
-def create_pirate_improvement():
-    """Create a LangChain-powered pirate improvement function"""
+def create_major_advice():
+    """Create a LangChain-powered agent that gives college major advice"""
 
     # Initialize the LLM
     llm = ChatAnthropic(
@@ -17,34 +17,30 @@ def create_pirate_improvement():
     # Create a prompt template for pirate transformation
     prompt = PromptTemplate(
         input_variables=["message"],
-        template="""Transform the following message into pirate 
-English. 
-        Use pirate vocabulary, grammar, and expressions like 'ahoy', 
-'matey', 'ye', 'arrr', etc.
-        Keep the core meaning intact but make it sound like a pirate 
-would say it.
+        template="""Give high school and college students advice on selecting a major to study in college. Be encouraging and optimistic. Encourage the students to pursue their passions and their dreams. 
+        Use positive, uplifting, and empathetic vocabularly, grammar, and expressions like 'dream', 'inspire', 'mission', etc. Ask questions to encourage students to think more deeply about what they want to study. 
         
         Original message: {message}
         
-        Pirate version:"""
+        College major advice response:"""
     )
 
     # Create the chain
     chain = prompt | llm | StrOutputParser()
 
     def pirate_improvement(message_text: str) -> str:
-        """Transform message to pirate English"""
+        """Give students encouraging advice on selecting a major to study"""
         try:
             result = chain.invoke({"message": message_text})
             return result.strip()
         except Exception as e:
-            print(f"Error in pirate improvement: {e}")
-            return f"Arrr! {message_text}, matey!"  # Fallback pirate transformation
+            print(f"Error in giving advice: {e}")
+            return f"Oh no! {message_text}, I'm sorry I don't have advice."  # Fallback response
 
     return pirate_improvement
 
 def main():
-    """Main function to start the pirate agent"""
+    """Main function to start the college major advice agent"""
 
     # Check for API key
     if not os.getenv("ANTHROPIC_API_KEY"):
@@ -52,14 +48,14 @@ def main():
         return
 
     # Create pirate improvement function
-    pirate_logic = create_pirate_improvement()
+    pirate_logic = create_major_advice()
 
     # Initialize NANDA with pirate logic
     nanda = NANDA(pirate_logic)
 
     # Start the server
-    print("Starting Pirate Agent with LangChain...")
-    print("All messages will be transformed to pirate English!")
+    print("Starting College Major Advice Agent with LangChain...")
+    print("Giving college major advice!")
 
     domain = os.getenv("DOMAIN_NAME", "localhost")
     # debbie add
