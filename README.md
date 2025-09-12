@@ -23,8 +23,6 @@ Retrieve an [Anthropic Key](https://console.anthropic.com). Set your `ANTHROPIC_
 export ANTHROPIC_API_KEY="YOUR KEY HERE"
 ```
 
-
-
 ## Installation
 Clone the repository
 ```
@@ -64,6 +62,14 @@ Logging conversations to /Users/debbieyuen/Documents/Personal Projects/radiusfel
 Starting A2A server on http://0.0.0.0:8000/a2a
 ```
 
+## Resources
+* Agent Development Kit (ADK) Samples
+* [NANDA-SDK](https://github.com/projnanda/nanda-sdk?tab=readme-ov-file)
+* [DuckDNS](https://www.duckdns.org/domains)
+* [AWS EC2](https://us-east-2.signin.aws.amazon.com)
+* [Chat-NANDA-registry](https://chat.nanda-registry.com/index.html)
+* [Build with Claude](https://docs.anthropic.com/en/home)
+  
 ## License
 MIT License
 
