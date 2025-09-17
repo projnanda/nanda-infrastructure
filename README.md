@@ -101,6 +101,11 @@ INFO:werkzeug:Press CTRL+C to quit
 * [Build with Claude](https://docs.anthropic.com/en/home)
 * [Anthropic Courses](https://anthropic.skilljar.com)
   
+## Ideas
+* MatLab
+* Unity
+* Unreal
+  
 ## License
 MIT License
 
