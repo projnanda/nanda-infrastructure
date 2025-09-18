@@ -105,6 +105,16 @@ INFO:werkzeug:Press CTRL+C to quit
 * MatLab
 * Unity
 * Unreal
+
+## Agent Comparison
+* [Wolfram 4o with ChatGPT](https://chatgpt.com/g/g-0S5FXLyFN-wolfram?model=gpt-4o)
+* ChatGPT 4o
+* Claude
+* Grock
+* [Solvely](https://solvely.ai)
+* [Math AI](https://math-gpt.ai)
+* [MathGPT](https://math-gpt.org)
+* 
   
 ## License
 MIT License
