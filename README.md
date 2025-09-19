@@ -41,6 +41,13 @@ Retrieve an [Anthropic Key](https://console.anthropic.com). Set your `ANTHROPIC_
 export ANTHROPIC_API_KEY="YOUR KEY HERE"
 ```
 
+Sign up for an [OpenAI API key](https://openai.com/index/openai-api/)
+```
+pip install openai
+export OPENAI_API_KEY=sk-...    
+export OPENAI_MODEL=gpt-5
+```
+
 Run the `requirements.txt` file
 ```
 pip install -r requirements.txt
