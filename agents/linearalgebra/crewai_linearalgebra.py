@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os, time, statistics
 from typing import List
 from nanda_adapter import NANDA
@@ -30,7 +31,7 @@ def compute_latency_metrics(this_run: float) -> dict:
 def create_linearalgebra():
     """Create a CrewAI-powered agent that explains the important concepts of linear algebra."""
 
-    # LLM (Anthropic via LangChain wrapper, used inside CrewAI)
+    # LLM 
     llm = ChatAnthropic(
         api_key=os.getenv("ANTHROPIC_API_KEY"),
         model="claude-3-haiku-20240307",
@@ -41,7 +42,7 @@ def create_linearalgebra():
         role="Linear Algebra Tutor",
         goal=(
             "Explain core linear algebra ideas clearly and correctly and, when asked, "
-            "demonstrate a simple Gaussian elimination example."
+            "demonstrate a simple Gaussian elimination example. Solve the math problem and give the answer."
         ),
         backstory=(
             "You are a precise but friendly math tutor who favors short, accurate explanations."
@@ -51,13 +52,13 @@ def create_linearalgebra():
         allow_delegation=False,
     )
 
-
     explain_task = Task(
         description=(
+            "Solve math problems given to you."
             "Explain what linear algebra is and why it is important. "
             "Be easy to understand and mention: matrix & vector algebra, Gaussian elimination, "
             "vector spaces, linear independence, and eigenvectors. "
-            "Try solving a small math problem with Gaussian elimination.\n\n"
+            "Solve the math problem with Gaussian elimination.\n\n"
             "Original message from user:\n{message}\n\n"
             "Provide a concise, correct answer."
         ),
