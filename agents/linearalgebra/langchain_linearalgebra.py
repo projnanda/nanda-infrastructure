@@ -1,9 +1,32 @@
 #!/usr/bin/env python3
-import os
+import os, time, statistics
+from typing import List, Optional
 from nanda_adapter import NANDA
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
+
+LATENCY_HISTORY: List[float] = []
+
+def compute_latency_metrics(this_run: float) -> dict:
+    """Compute metrics based on this run and last 2 runs"""
+    LATENCY_HISTORY.append(this_run)
+    prior_two = LATENCY_HISTORY[-2:]  # two runs before this one
+
+    if prior_two:
+        p50 = statistics.median(prior_two)
+        mean = statistics.mean(prior_two)
+        p95 = max(prior_two) if len(prior_two) >= 2 else prior_two[0]
+    else:
+        p50 = mean = p95 = None
+
+    return {
+        "latency_this_run_ms": this_run,
+        "latency_p50_last2_ms": p50,
+        "latency_mean_last2_ms": mean,
+        "latency_p95_last2_ms": p95,
+        "residual": None  # not applicable for this agent
+    }
 
 def create_linearalgebra():
     """Create a LangChain-powered agent that explains the important concepts of linear algebra."""
@@ -30,13 +53,27 @@ def create_linearalgebra():
 
     def pirate_improvement(message_text: str) -> str:
         """Teach the important concepts of the math subject, Linear Algebra"""
+        start = time.perf_counter()
         try:
             result = chain.invoke({"message": message_text})
-            return result.strip()
+            # return result.strip()
         except Exception as e:
             print(f"Error in teaching Linear Algebra: {e}")
             return f"Count to 1, 2, 3{message_text}, I don't know Linear Algebra!"  # Fallback pirate transformation
+        elapsed_ms = (time.perf_counter() - start) * 1000.0
 
+        metrics = compute_latency_metrics(elapsed_ms)
+
+        # Print metrics to terminal
+        print("\nLatency summary:")
+        print(f"  Latency (this run): {metrics['latency_this_run_ms']:.2f} ms")
+        print(f"  Latency p50 (last 2 runs): {metrics['latency_p50_last2_ms']:.2f} ms" if metrics['latency_p50_last2_ms'] is not None else "  Latency p50 (last 2 runs): N/A")
+        print(f"  Latency mean (last 2 runs): {metrics['latency_mean_last2_ms']:.2f} ms" if metrics['latency_mean_last2_ms'] is not None else "  Latency mean (last 2 runs): N/A")
+        print(f"  Latency p95 (last 2 runs): {metrics['latency_p95_last2_ms']:.2f} ms" if metrics['latency_p95_last2_ms'] is not None else "  Latency p95 (last 2 runs): N/A")
+        print(f"  Residual: {metrics['residual']}")
+        print("---\n")
+
+        return result.strip()
     return pirate_improvement
 
 def main():
