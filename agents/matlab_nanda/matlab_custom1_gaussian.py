@@ -1,17 +1,16 @@
-#!/usr/bin/env python3
 import os, time, ast, re, json, pathlib, statistics as stats
 from typing import Tuple, Optional, List
 
 import numpy as np
 from nanda_adapter import NANDA
 
-# ---------- LLMs OFF FOR THIS PROCESS ----------
+# Do not use LLMs
 for k in ("ANTHROPIC_API_KEY","OPENAI_API_KEY","TOGETHER_API_KEY"):
     os.environ.pop(k, None)
 os.environ["NANDA_IMPROVEMENT_ENABLED"] = "0"
 os.environ["DISABLE_IMPROVE_MESSAGE"]  = "1"
 
-# ---------- METRICS ----------
+# Metrics and Stats
 METRICS_PATH = pathlib.Path(__file__).with_name("gaussian_metrics.jsonl")
 DEFAULT_WINDOW = 10  # last N runs to chart
 
@@ -62,7 +61,7 @@ def parse_window(text: str) -> int:
     except Exception:
         return DEFAULT_WINDOW
 
-# ---------- MATLAB engine setup ----------
+# MATLAB setup
 try:
     import matlab.engine
     _ENG = None
@@ -131,7 +130,7 @@ def format_steps(steps_ml, full: bool, limit: int = 12) -> str:
     head = steps_py[:limit]
     return "\n".join(f"  {i+1}. {s}" for i, s in enumerate(head)) + "\n  … (truncated)"
 
-# ---------- AGENT ----------
+# Agent
 def create_agent():
     def agent_logic(message_text: str) -> str:
         # reset metrics if asked
