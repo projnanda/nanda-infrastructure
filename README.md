@@ -93,13 +93,28 @@ INFO:werkzeug:Press CTRL+C to quit
 ```
 
 ## Resources
-* Agent Development Kit (ADK) Samples
+* [Agent Development Kit (ADK) Samples](https://github.com/google/adk-samples)
 * [NANDA-SDK](https://github.com/projnanda/nanda-sdk?tab=readme-ov-file)
 * [DuckDNS](https://www.duckdns.org/domains)
 * [AWS EC2](https://us-east-2.signin.aws.amazon.com)
 * [Chat-NANDA-registry](https://chat.nanda-registry.com/index.html)
 * [Build with Claude](https://docs.anthropic.com/en/home)
 * [Anthropic Courses](https://anthropic.skilljar.com)
+  
+## Ideas
+* MatLab
+* Unity
+* Unreal
+
+## Agent Comparison
+* [Wolfram 4o with ChatGPT](https://chatgpt.com/g/g-0S5FXLyFN-wolfram?model=gpt-4o)
+* ChatGPT 4o
+* Claude
+* Grock
+* [Solvely](https://solvely.ai)
+* [Math AI](https://math-gpt.ai)
+* [MathGPT](https://math-gpt.org)
+* 
   
 ## License
 MIT License
