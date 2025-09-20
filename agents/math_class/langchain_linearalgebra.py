@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os, time, statistics
 from typing import List
 from nanda_adapter import NANDA
