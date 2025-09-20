@@ -1,3 +1,5 @@
 {"ts": 1758265128.6060748, "latency_s": 0.05375925003318116, "residual_2": 8.881784197001252e-16, "n": 3, "provider": "MATLAB (no Claude)", "methodology": "MATLAB"}
 {"ts": 1758266796.015624, "latency_s": 0.21311066701309755, "residual_2": 8.881784197001252e-16, "n": 3, "provider": "MATLAB (no Claude)", "methodology": "MATLAB"}
 {"ts": 1758269453.233873, "latency_s": 0.05087408295366913, "residual_2": 8.881784197001252e-16, "n": 3, "provider": "MATLAB (no Claude)", "methodology": "MATLAB"}
+{"ts": 1758400474.1139681, "latency_s": 0.21905650000553578, "residual_2": 8.881784197001252e-16, "n": 3, "provider": "MATLAB (no Claude)", "methodology": "MATLAB"}
+{"ts": 1758401238.315278, "latency_s": 0.04755512496922165, "residual_2": 8.881784197001252e-16, "n": 3, "provider": "MATLAB (no Claude)", "methodology": "MATLAB"}

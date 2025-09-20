@@ -209,3 +209,6 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Ignore NANDA conversation logs
+agents/matlab_nanda/conversation_logs/

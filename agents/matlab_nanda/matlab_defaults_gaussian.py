@@ -1,16 +1,66 @@
-#!/usr/bin/env python3
 import os, time, ast, re, json, pathlib, statistics as stats
 from typing import Tuple, Optional, List
 
 import numpy as np
 from nanda_adapter import NANDA
 
-# Do not use LLMs
-for k in ("ANTHROPIC_API_KEY", "OPENAI_API_KEY", "TOGETHER_API_KEY"):
-    os.environ.pop(k, None)
-os.environ["NANDA_IMPROVEMENT_ENABLED"] = "0"
-os.environ["DISABLE_IMPROVE_MESSAGE"] = "1"
+# \LLM hard-disable for this agent only
+def _scrub_llm_env():
+    # Do not rely on env alone (we also inject a Noop provider below),
+    # but scrub anyway to reduce accidental pickup in this process.
+    for k in ("ANTHROPIC_API_KEY", "OPENAI_API_KEY", "TOGETHER_API_KEY"):
+        os.environ.pop(k, None)
+    os.environ["NANDA_IMPROVEMENT_ENABLED"] = "0"
+    os.environ["DISABLE_IMPROVE_MESSAGE"] = "1"
+    # If your NANDA build honors these, they help too (harmless if unknown):
+    os.environ["NANDA_ALLOW_LLM"] = "0"
+    os.environ["NANDA_BLOCK_PROVIDER"] = "1"
 
+class _NoopLLM:
+    """A provider object that satisfies NANDA's provider shape but never calls out."""
+    name = "noop"
+    def __init__(self, *a, **kw): pass
+    # Common method names; include the ones your NANDA version expects
+    def chat(self, *a, **kw):
+        raise RuntimeError("LLM disabled for this agent (noop provider).")
+    def stream(self, *a, **kw):
+        raise RuntimeError("LLM disabled for this agent (noop provider).")
+    def __call__(self, *a, **kw):
+        raise RuntimeError("LLM disabled for this agent (noop provider).")
+
+def _force_no_llm(nanda_obj):
+    """
+    Force the adapter to never use an LLM by setting a Noop provider,
+    covering different NANDA versions/shapes.
+    """
+    # v1-style: explicit setter
+    if hasattr(nanda_obj, "set_llm_provider"):
+        try:
+            nanda_obj.set_llm_provider(_NoopLLM())
+            return
+        except Exception:
+            pass
+    # common attributes seen across versions
+    for attr in ("llm", "_llm", "provider", "_provider"):
+        if hasattr(nanda_obj, attr):
+            try:
+                setattr(nanda_obj, attr, _NoopLLM())
+                return
+            except Exception:
+                pass
+    # registry or config bag patterns
+    for attr in ("providers", "_providers", "config", "_config"):
+        if hasattr(nanda_obj, attr):
+            try:
+                bag = getattr(nanda_obj, attr)
+                # best-effort: typical keys
+                for k in ("llm", "default_llm", "provider", "model"):
+                    if isinstance(bag, dict) and k in bag:
+                        bag[k] = _NoopLLM()
+                return
+            except Exception:
+                pass
+    # If none of these worked, we still have env + intent guard as backstops.
 # Metrics and Stats
 METRICS_PATH = pathlib.Path(__file__).with_name("gaussian_metrics.jsonl")
 DEFAULT_WINDOW = 10  # last N runs to chart
@@ -214,14 +264,40 @@ def create_agent():
     return agent_logic
 
 def main():
+    # 1) Lock this process to MATLAB-only
+    _scrub_llm_env()
+
+    # 2) Build agent + NANDA, and force no-LLM provider
     agent = create_agent()
     nanda = NANDA(agent)
-    domain = os.getenv("DOMAIN_NAME", "localhost")
-    print("Starting MATLAB Gaussian agent…")
-    if domain != "localhost":
-        nanda.start_server_api(os.getenv("ANTHROPIC_API_KEY"), domain)
-    else:
-        nanda.start_server()
+    _force_no_llm(nanda)
+
+    # 3) Bind & domain settings
+    host = os.getenv("BIND_HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "6060"))            # <- use 6060 to avoid X11 conflicts
+    domain = os.getenv("DOMAIN_NAME", "localhost")   # set to your real domain in cloud
+
+    print(f"[startup] MATLAB Gaussian agent (NANDA, NO-LLM)")
+    print(f"[startup] host={host} port={port} domain={domain!r}")
+
+    # 4) Start server (cloud if domain != localhost)
+    try:
+        if domain and domain != "localhost":
+            print("[startup] using start_server_api (cloud mode, NO LLM key)")
+            try:
+                nanda.start_server_api(None, domain, host=host, port=port)
+            except TypeError:
+                # older NANDA signatures
+                nanda.start_server_api(None, domain)
+        else:
+            print("[startup] using start_server (local/dev)")
+            try:
+                nanda.start_server(host=host, port=port)
+            except TypeError:
+                nanda.start_server()
+    except Exception as e:
+        print(f"[startup] FAILED to start server: {e}")
+        raise
 
 if __name__ == "__main__":
     main()

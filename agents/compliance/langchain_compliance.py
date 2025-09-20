@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Compliance Agent (Geo-fencing & Policy PDP)
 MVP storage: JSON/JSONL on disk. Redaction: basic email/phone scrubber.
@@ -15,9 +14,8 @@ from typing import Any, Dict, List, Optional
 
 from nanda_adapter import NANDA  # pip install nanda-adapter
 
-# -----------------------------------------------------------------------------
 # Config / storage
-# -----------------------------------------------------------------------------
+
 COMP_DIR       = Path(os.getenv("COMPLIANCE_DIR", "compliance_data"))
 POLICY_FILE    = COMP_DIR / "policies.json"        # source of truth
 DECISIONS_FILE = COMP_DIR / "decisions.jsonl"      # append log of decisions
@@ -27,9 +25,8 @@ SECRET         = os.getenv("COMPLIANCE_SECRET", "dev-compliance-secret")
 for p in (COMP_DIR,):
     p.mkdir(parents=True, exist_ok=True)
 
-# -----------------------------------------------------------------------------
 # Helpers
-# -----------------------------------------------------------------------------
+
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
