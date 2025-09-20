@@ -7,9 +7,7 @@ from pathlib import Path
 from nanda_adapter import NANDA   # pip install nanda-adapter
 # This agent doesn't need an LLM itself; it evaluates another agent via HTTP.
 
-# -------------------------------
 # Config / storage
-# -------------------------------
 DATA_DIR = Path(os.getenv("CERT_DATA_DIR", "cert_data"))        # ./cert_data/
 EVIDENCE_DIR = DATA_DIR / "evidence"                            # ./cert_data/evidence/
 JOBS_FILE = DATA_DIR / "cert_jobs.jsonl"                        # append-only log
@@ -21,10 +19,7 @@ DEFAULT_RPS = float(os.getenv("CERT_RPS", "1.0"))               # requests/secon
 for p in (DATA_DIR, EVIDENCE_DIR):
     p.mkdir(parents=True, exist_ok=True)
 
-
-# -------------------------------
 # Utilities
-# -------------------------------
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -56,10 +51,8 @@ def wilson_ci(successes: int, n: int, z: float = 1.96) -> Tuple[float, float]:
     return (max(0.0, center - margin), min(1.0, center + margin))
 
 
-# -------------------------------
 # Minimal test suites (replace with your real datasets)
 # Each item: capability, topic, difficulty, question, answer
-# -------------------------------
 SAMPLE_TESTS: List[Dict[str, Any]] = [
     # Math G1–G12 tiny sample (exact-match grading)
     {"capability":"math.g1_g12","topic":"algebra","difficulty":"easy",
@@ -86,9 +79,7 @@ def load_tests_for(capabilities: List[str]) -> List[Dict[str, Any]]:
     return [t for t in SAMPLE_TESTS if t["capability"] in capabilities]
 
 
-# -------------------------------
 # Grading
-# -------------------------------
 def grade_math_exact(pred: str, gold: str) -> float:
     return 1.0 if normalize(pred) == normalize(gold) else 0.0
 
@@ -111,10 +102,7 @@ def grade_item(capability: str, pred: str, gold: str) -> float:
     # Simple QA fallback
     return 1.0 if f1_score(pred, gold) >= 0.6 else 0.0
 
-
-# -------------------------------
 # Invoke target agent (A2A)
-# -------------------------------
 import requests
 
 def call_agent_a2a(endpoint: str, text: str, timeout: float = 30.0) -> str:
@@ -139,10 +127,7 @@ def call_agent_a2a(endpoint: str, text: str, timeout: float = 30.0) -> str:
     except Exception:
         return r.text
 
-
-# -------------------------------
 # Job runner
-# -------------------------------
 class JobRunner:
     def __init__(self):
         self._lock = threading.Lock()
@@ -247,14 +232,11 @@ class JobRunner:
 
 JOB_RUNNER = JobRunner()
 
-
-# -------------------------------
 # Capability Certifier "agent" (NANDA-compatible). It routes actions over /a2a.
 # Actions:
 #   start  -> kicks off a job
 #   status -> returns progress
 #   certificate -> returns latest cert for an agent
-# -------------------------------
 def create_capability_certifier():
     def handle(message_text: str) -> str:
         """
@@ -319,10 +301,7 @@ def create_capability_certifier():
 
     return handle
 
-
-# -------------------------------
 # Main: run as a NANDA agent server
-# -------------------------------
 def main():
     # No API key needed here; this agent orchestrates/grades.
     cert_logic = create_capability_certifier()
