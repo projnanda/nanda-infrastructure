@@ -4,6 +4,7 @@ from typing import Tuple, Optional, List
 import numpy as np
 from nanda_adapter import NANDA
 
+
 # \LLM hard-disable for this agent only
 def _scrub_llm_env():
     # Do not rely on env alone (we also inject a Noop provider below),
@@ -28,7 +29,7 @@ class _NoopLLM:
     def __call__(self, *a, **kw):
         raise RuntimeError("LLM disabled for this agent (noop provider).")
 
-def _force_no_llm(nanda_obj):
+def force_no_llm(nanda_obj):
     """
     Force the adapter to never use an LLM by setting a Noop provider,
     covering different NANDA versions/shapes.
@@ -270,7 +271,7 @@ def main():
     # 2) Build agent + NANDA, and force no-LLM provider
     agent = create_agent()
     nanda = NANDA(agent)
-    _force_no_llm(nanda)
+    force_no_llm(nanda)
 
     # 3) Bind & domain settings
     host = os.getenv("BIND_HOST", "0.0.0.0")

@@ -5,8 +5,8 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_anthropic import ChatAnthropic
 
-def create_major_advice():
-    """Create a LangChain-powered agent that gives college major advice"""
+def hype_math():
+    """Create a LangChain-powered agent that encourages and promotes math education"""
 
     # Initialize the LLM
     llm = ChatAnthropic(
@@ -14,21 +14,20 @@ def create_major_advice():
         model="claude-3-haiku-20240307"
     )
 
-    # Create a prompt template for pirate transformation
+    # Create a prompt template for math education
     prompt = PromptTemplate(
         input_variables=["message"],
-        template="""Give high school and college students advice on selecting a major to study in college. Be encouraging and optimistic. Encourage the students to pursue their passions and their dreams. 
-        Use positive, uplifting, and empathetic vocabularly, grammar, and expressions like 'dream', 'inspire', 'mission', etc. Ask questions to encourage students to think more deeply about what they want to study. 
+        template="""You are a warm and encouraging mentor who is helping students learn math. Motivate them that studying math is exciting and applicable in many different fields of expertise. Use supportive language such as "you've got this", "curiosity", "dream", "dream", and "mission". Ask the questions if they would like to learn linear algebra and if they would like to go through a problem together.
         
-        Original message: {message}
+        Student message: {message}\n\n
         
-        College major advice response:"""
+        Math advisor response:"""
     )
 
     # Create the chain
     chain = prompt | llm | StrOutputParser()
 
-    def pirate_improvement(message_text: str) -> str:
+    def math_advisor(message_text: str) -> str:
         """Give students encouraging advice on selecting a major to study"""
         try:
             result = chain.invoke({"message": message_text})
@@ -37,7 +36,7 @@ def create_major_advice():
             print(f"Error in giving advice: {e}")
             return f"Oh no! {message_text}, I'm sorry I don't have advice."  # Fallback response
 
-    return pirate_improvement
+    return math_advisor
 
 def main():
     """Main function to start the college major advice agent"""
@@ -48,7 +47,7 @@ def main():
         return
 
     # Create pirate improvement function
-    pirate_logic = create_major_advice()
+    pirate_logic = hype_math()
 
     # Initialize NANDA with pirate logic
     nanda = NANDA(pirate_logic)
@@ -58,7 +57,6 @@ def main():
     print("Giving college major advice!")
 
     domain = os.getenv("DOMAIN_NAME", "localhost")
-    # debbie add
     # port = int(os.getenv("PORT", "6000"))
 
     if domain != "localhost":
@@ -68,6 +66,5 @@ def main():
         # Development server
         nanda.start_server()
         
-
 if __name__ == "__main__":
     main()
