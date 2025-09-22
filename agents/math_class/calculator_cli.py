@@ -12,7 +12,7 @@ def matlab_engine():
     global ENGINE
     if ENGINE is None:
         ENGINE = matlab.engine.start_matlab("-nojvm")
-        helpers = Path(__file__).resolve().parents[0] / "math_class"
+        helpers = Path(__file__).resolve().parents[0]
         # helpers = Path(__file__).resolve().parents[0] / "math_class" / "matlab_calculator"
         ENGINE.addpath(str(helpers), nargout=0)
     return ENGINE
@@ -29,7 +29,7 @@ def eval_calc(expr: str):
     t = expr.strip()
     if t.startswith("="):
         t = t[1:].strip()
-    result = eng.safe_calculator(t, nargout=1)
+    result = eng.matlab_evaluator(t, nargout=1)
     return mat_to_py(result)
 def mat_to_py(val):
     if isinstance(val, matlab.double):
