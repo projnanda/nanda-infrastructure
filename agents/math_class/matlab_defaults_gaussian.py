@@ -5,7 +5,7 @@ import numpy as np
 from nanda_adapter import NANDA
 
 
-# \LLM hard-disable for this agent only
+# LLM hard-disable for this agent only
 def _scrub_llm_env():
     # Do not rely on env alone (we also inject a Noop provider below),
     # but scrub anyway to reduce accidental pickup in this process.
