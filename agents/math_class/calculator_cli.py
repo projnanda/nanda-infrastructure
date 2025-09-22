@@ -12,7 +12,8 @@ def matlab_engine():
     global ENGINE
     if ENGINE is None:
         ENGINE = matlab.engine.start_matlab("-nojvm")
-        helpers = Path(__file__).resolve().parents[0] / "math_class" / "matlab_calculator"
+        helpers = Path(__file__).resolve().parents[0] / "math_class"
+        # helpers = Path(__file__).resolve().parents[0] / "math_class" / "matlab_calculator"
         ENGINE.addpath(str(helpers), nargout=0)
     return ENGINE
 
