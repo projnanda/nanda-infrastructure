@@ -10,6 +10,12 @@ The NANDA Adapter:
 * Adds discoverability, interoperability, and flexible communication
 * Lets you keep full control over data and infrastructure
 
+The Infrastructure Agents: 
+* Capability: `capability_certifier`
+* Points Auditor: `points_auditor`
+* Compliance: `compliance_enforcer`
+* Observer: `observer_evaluator`
+
 ## Prerequisites
 * Python 3.6+
 * MongoDB Compass 
