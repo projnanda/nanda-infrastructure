@@ -36,7 +36,6 @@ def create_linearalgebra():
             result = chain.invoke({"message": message_text})
             return result.strip()
         except Exception as e:
-            # Keep it short; your router will surface this.
             return f"Sorry—linear algebra tutor hit an error: {e}"
 
     return linear_advisor

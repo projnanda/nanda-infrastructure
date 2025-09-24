@@ -211,4 +211,4 @@ marimo/_lsp/
 __marimo__/
 
 # Ignore NANDA conversation logs
-agents/matlab_nanda/conversation_logs/
+agents/math_class/conversation_logs/
