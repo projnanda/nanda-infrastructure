@@ -1,7 +1,18 @@
-# Linear Algebra Agent
-**Goal:** Explain core Linear Algebra ideas and walk through simple problems.  
-**Endpoint:** `POST /a2a`
+# Math Class Agent
+An agent that funs the MatLab compiler in the background in addition to custom MatLab files. Starting with Linear Algebra. 
 
+## Math Problems 
+* Gaussian Elimination
+
+## Math Questions
+* What are linear combinations and why are vectors and matrices important?
+* What does it mean to say vectors *v* and *w* are linearly independent?
+* How do we know when 3 vectors fill a plane within a 3-dimensional space?
+* What is the Schwarz Inequality and the Triangle Inequality and how are they related?
+* What is the relationship between row picture and the dot product? Explain the cosine formula and how it illustrates whether unit vectors are perpendicular or parallel?
+* Where dos the row picture of A*x* come from? Where does the column picture come from?
+* In matrix multiplication, why is matrix *AB* usually different from *BA*?
+  
 ## Quick Start 
 Within your `.venv` run: 
 ```
